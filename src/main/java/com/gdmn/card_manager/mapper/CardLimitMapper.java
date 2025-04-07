@@ -4,7 +4,8 @@ import com.gdmn.card_manager.dto.CardLimitData;
 import com.gdmn.card_manager.model.CardLimit;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class CardLimitMapper {
@@ -16,10 +17,10 @@ public class CardLimitMapper {
                 .setAmount(cardLimit.getAmount());
     }
 
-    public List<CardLimitData> map(List<CardLimit> cardLimits) {
+    public Set<CardLimitData> map(Set<CardLimit> cardLimits) {
         return cardLimits
                 .stream()
                 .map(this::map)
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

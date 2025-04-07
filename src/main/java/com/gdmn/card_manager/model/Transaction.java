@@ -19,6 +19,10 @@ public class Transaction {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id")
     private Card card;
 
@@ -26,7 +30,7 @@ public class Transaction {
     @Column(name = "type")
     private TransactionType type;
 
-    @Column(name = "time_stamp")
+    @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
     @Column(name = "amount", precision = 19, scale = 4)
@@ -34,4 +38,9 @@ public class Transaction {
 
     @Column(name = "description")
     private String description;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

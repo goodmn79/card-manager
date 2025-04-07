@@ -31,4 +31,9 @@ public class CardLimit {
 
     @Column(name = "amount")
     private BigDecimal amount;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

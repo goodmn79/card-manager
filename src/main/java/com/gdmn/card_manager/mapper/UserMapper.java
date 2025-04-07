@@ -14,10 +14,10 @@ public class UserMapper {
     private final PasswordEncoder passwordEncoder;
 
     public User map(Register register) {
-        String password = passwordEncoder.encode(register.getPassword());
+        String encodedPassword = passwordEncoder.encode(register.getPassword());
         return new User()
                 .setUsername(register.getUsername())
-                .setPassword(password)
+                .setPassword(encodedPassword)
                 .setFirstName(register.getFirstName())
                 .setMidlName(register.getMidlName())
                 .setLastName(register.getLastName())

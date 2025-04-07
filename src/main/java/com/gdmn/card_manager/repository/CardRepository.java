@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
-    Page<Card> findAllCardsByUserId(Long userId, Pageable pageable);
+    @Query(value = "SELECT c FROM cards c WHERE c.user_id = ? ORDER BY c.expiry_date", nativeQuery = true)
+    Page<Card> findUserCardsSortedByExpiryDate(Long userId, Pageable pageable);
 
     @Modifying
     @Query(value = "UPDATE cards SET status = 'EXPIRED' WHERE expiry_date = CURRENT_DATE AND status <> 'EXPIRED'", nativeQuery = true)

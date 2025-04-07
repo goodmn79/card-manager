@@ -1,6 +1,5 @@
 package com.gdmn.card_manager.mapper;
 
-import com.gdmn.card_manager.dto.ActivateCard;
 import com.gdmn.card_manager.dto.CardData;
 import com.gdmn.card_manager.dto.CardLimitData;
 import com.gdmn.card_manager.dto.CreateCard;
@@ -13,8 +12,9 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -24,27 +24,23 @@ public class CardMapper {
     private final CardLimitMapper cardLimitMapper;
 
     public Card map(CreateCard card) {
+        User owner = userService.getById(card.getUserId());
         String encryptedCardNumber = stringEncryptor.encrypt(card.getCardNumber());
         return new Card()
-                .setCardNumber(encryptedCardNumber);
-    }
-
-    public Card map(ActivateCard activateCard, Card card) {
-        User user = userService.getById(activateCard.getUserId());
-        return card
-                .setUser(user)
-                .setExpiryDate(LocalDate.now().plusYears(3))
+                .setCardNumber(encryptedCardNumber)
+                .setOwner(owner)
+                .setExpiryDate(LocalDate.now())
                 .setStatus(CardStatus.ACTIVE)
-                .setBalance(activateCard.getBalance());
+                .setBalance(BigDecimal.ZERO);
     }
 
     public CardData map(Card card) {
         String maskedCardNumber = this.getMaskedCardNumber(card.getCardNumber());
-        List<CardLimitData> limits = cardLimitMapper.map(card.getLimits());
+        Set<CardLimitData> limits = cardLimitMapper.map(card.getLimits());
         return new CardData()
                 .setId(card.getId())
                 .setCardNumber(maskedCardNumber)
-                .setUserId(card.getUser().getId())
+                .setUserId(card.getOwner().getId())
                 .setExpiryDate(card.getExpiryDate())
                 .setStatus(card.getStatus())
                 .setBalance(card.getBalance())

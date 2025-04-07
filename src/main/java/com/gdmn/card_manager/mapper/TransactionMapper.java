@@ -2,9 +2,8 @@ package com.gdmn.card_manager.mapper;
 
 import com.gdmn.card_manager.dto.TransactionData;
 import com.gdmn.card_manager.model.Transaction;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class TransactionMapper {
@@ -19,9 +18,7 @@ public class TransactionMapper {
                 .setDescription(t.getDescription());
     }
 
-    public List<TransactionData> map(List<Transaction> t) {
-        return t.stream()
-                .map(this::map)
-                .toList();
+    public Page<TransactionData> map(Page<Transaction> t) {
+        return t.map(this::map);
     }
 }

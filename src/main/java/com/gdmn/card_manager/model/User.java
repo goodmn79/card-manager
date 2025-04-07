@@ -37,6 +37,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = true;
+
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Card> cards = new HashSet<>();
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

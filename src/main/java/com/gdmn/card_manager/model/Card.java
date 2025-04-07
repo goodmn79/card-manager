@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "cards")
@@ -26,7 +26,7 @@ public class Card {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User owner;
 
     @Column(name = "expiry_date")
     private LocalDate expiryDate;
@@ -39,8 +39,13 @@ public class Card {
     private BigDecimal balance;
 
     @OneToMany(mappedBy = "card", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
-    private List<CardLimit> limits;
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<CardLimit> limits = new HashSet<>();
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -7,7 +7,8 @@ import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Accessors(chain = true)
@@ -25,5 +26,5 @@ public class CardData {
     @Schema(description = "payment card balance")
     private BigDecimal balance;
     @Schema(description = "list of limits for operations")
-    private List<CardLimitData> limits;
+    private Set<CardLimitData> limits = new HashSet<>();
 }
