@@ -43,7 +43,7 @@ public class AdminInit {
                     .setRole(Role.ROLE_ADMIN);
 
             userRepository.save(admin);
-            log.info("Admin with loin '{}' created", username);
+            log.info("Admin with username '{}' created", username);
         } else {
             log.info("Admin with loin '{}' already exists", username);
         }
